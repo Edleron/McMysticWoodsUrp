@@ -63,10 +63,12 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("swordAttack");
     }
 
+    // Animator Events
     void LockMovement() {
         canMove = false;
     }
 
+    // Animator Events
     void UnLockMovement(){
         canMove = true;
     }
