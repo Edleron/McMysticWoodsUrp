@@ -57,4 +57,8 @@ public class PlayerController : MonoBehaviour
     void OnMove(InputValue value) {
         moveInput = value.Get<Vector2>();
     }
+
+    void OnFire(){
+        animator.SetTrigger("swordAttack");
+    }
 }
