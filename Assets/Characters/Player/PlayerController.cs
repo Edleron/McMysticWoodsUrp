@@ -7,14 +7,20 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 150f;
     public float maxSpeed = 8f;
-
     // Each frame of physics, what percentage of the speed should be shaved off the velocity out of 1 (100%)
     public float idleFriction = 0.9f;
-    Rigidbody2D rb;
-    Animator animator;
-    SpriteRenderer spriteRenderer;
-    Vector2 moveInput = Vector2.zero;
+    private Rigidbody2D rb;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
+    private Vector2 moveInput = Vector2.zero;
 
+    private bool isMoving = false;
+    private bool IsMoving { 
+        set { 
+            isMoving = value; 
+            animator.SetBool("isMoving", isMoving);
+        }
+    }
 
     void Start(){
         rb = GetComponent<Rigidbody2D>();
@@ -36,12 +42,13 @@ public class PlayerController : MonoBehaviour
                 spriteRenderer.flipX = false;
             } else if (moveInput.x < 0) {
                 spriteRenderer.flipX = true;
-            }
+            }          
 
-            UpdateAnimatorParameters();
+            IsMoving = true;  
         } else {
             // No movement so interpolate velocity towards 0
             rb.velocity = Vector2.Lerp(rb.velocity, Vector2.zero, idleFriction);
+            IsMoving = false;
         }
     }
 
@@ -49,10 +56,5 @@ public class PlayerController : MonoBehaviour
     // Get input values for player movement
     void OnMove(InputValue value) {
         moveInput = value.Get<Vector2>();
-    }
-
-    void UpdateAnimatorParameters() {
-        animator.SetFloat("moveX", moveInput.x);
-        animator.SetFloat("moveY", moveInput.y);
     }
 }
