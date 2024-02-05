@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Vector2 moveInput = Vector2.zero;
 
+    private bool canMove = true;
     private bool isMoving = false;
     private bool IsMoving { 
         set { 
@@ -30,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate() {
         
-        if(moveInput != Vector2.zero) {
+        if(canMove && moveInput != Vector2.zero) {
             // Move animation and add velocity
 
             // Accelerate the player while run direction is pressed
@@ -60,5 +61,13 @@ public class PlayerController : MonoBehaviour
 
     void OnFire(){
         animator.SetTrigger("swordAttack");
+    }
+
+    void LockMovement() {
+        canMove = false;
+    }
+
+    void UnLockMovement(){
+        canMove = true;
     }
 }
