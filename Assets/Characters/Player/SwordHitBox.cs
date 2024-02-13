@@ -21,7 +21,6 @@ public class SwordHitBox : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col) {
         Debug.Log(col.gameObject.name);
-       
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
