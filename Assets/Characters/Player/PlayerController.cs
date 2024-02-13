@@ -5,17 +5,21 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 150f;
-    public float maxSpeed = 8f;
+
     // Each frame of physics, what percentage of the speed should be shaved off the velocity out of 1 (100%)
+    private bool canMove      = true;
+    private bool isMoving     = false;
+    public float maxSpeed     = 8f;
+    public float moveSpeed    = 150f;
     public float idleFriction = 0.9f;
-    private Rigidbody2D rb;
-    private Animator animator;
-    private SpriteRenderer spriteRenderer;
     private Vector2 moveInput = Vector2.zero;
 
-    private bool canMove = true;
-    private bool isMoving = false;
+    private Rigidbody2D rb;
+    private Animator animator;
+    public GameObject swordHitBox;
+    private Collider2D swordCollider;
+    private SpriteRenderer spriteRenderer;
+
     private bool IsMoving { 
         set { 
             isMoving = value; 
@@ -24,9 +28,10 @@ public class PlayerController : MonoBehaviour
     }
 
     void Start(){
-        rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        rb              = GetComponent<Rigidbody2D>();
+        animator        = GetComponent<Animator>();
+        spriteRenderer  = GetComponent<SpriteRenderer>();
+        swordCollider   = swordHitBox.GetComponent<Collider2D>();
     }
 
     void FixedUpdate() {

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4624457350861578957}
   - component: {fileID: 7908421728285179284}
+  - component: {fileID: 126801115019216807}
   m_Layer: 0
   m_Name: swordHitBox
   m_TagString: Untagged
@@ -77,6 +78,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.615, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &126801115019216807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2396390450653621646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab854b336c3f3b4cb3bb7546feeeefc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  swordDamage: 1
+  swordCollider: {fileID: 7908421728285179284}
 --- !u!1 &3254649542244090524
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,9 +194,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ba22eedaa25ea4ba84547ed344c60c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 150
   maxSpeed: 8
+  moveSpeed: 150
   idleFriction: 0.9
+  swordHitBox: {fileID: 2396390450653621646}
 --- !u!114 &4805589785160554423
 MonoBehaviour:
   m_ObjectHideFlags: 0
