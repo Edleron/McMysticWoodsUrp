@@ -4,13 +4,23 @@ using UnityEngine;
 
 public class SlimeController : MonoBehaviour
 {
+    private Animator animator;
+    private bool isAlive = true;
+
     public float Healt {
         set {
-            _health = value;
+            if (value < _health)
+            {
+                animator.SetTrigger("hit");
+            }
+
+            _health = value;            
 
             if (_health <= 0)
             {
-                Destroy(gameObject);
+                // Destroy(gameObject);
+                isAlive = false;
+                animator.SetBool("isAlive", isAlive);
             }
         }
         get {
@@ -19,6 +29,13 @@ public class SlimeController : MonoBehaviour
     }
 
     public float _health = 3;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+        animator.SetBool("isAlive", isAlive);
+    }
+
     private void OnHit(float damage)
     {
         Debug.Log("Silme Hit For ! " + damage);
