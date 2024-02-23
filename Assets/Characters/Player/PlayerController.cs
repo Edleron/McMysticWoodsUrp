@@ -46,8 +46,10 @@ public class PlayerController : MonoBehaviour
             // Control whether looking left or right
             if(moveInput.x > 0) {
                 spriteRenderer.flipX = false;
+                gameObject.BroadcastMessage("IsFacing", true);
             } else if (moveInput.x < 0) {
                 spriteRenderer.flipX = true;
+                gameObject.BroadcastMessage("IsFacing", false);
             }          
 
             IsMoving = true;  
