@@ -13,10 +13,12 @@ public class SlimeController : MonoBehaviour
 
     private Rigidbody2D rb;
     private DetectionZone dz;
+    private DamagableCharacters damagableCharacters;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
         dz = GetComponentInChildren<DetectionZone>();
+        damagableCharacters = GetComponent<DamagableCharacters>();
     }
 
     private void FixedUpdate() {
@@ -25,7 +27,7 @@ public class SlimeController : MonoBehaviour
             return;
         }
 
-        if (dz.detectedObjs.Count > 0)
+        if (damagableCharacters.Targetable && dz.detectedObjs.Count > 0)
         {
             Collider2D player = dz.detectedObjs[0];
             Vector2 direction = (player.transform.position - transform.position).normalized;
