@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Edleron;
+using Unity.VisualScripting;
 
 public class DamagableCharacters : MonoBehaviour, IDamagable
 {
@@ -57,9 +58,10 @@ public class DamagableCharacters : MonoBehaviour, IDamagable
     public void OnHit(float damage, Vector2 knobcback)
     {
         Healt -= damage;
-        rb.AddForce(knobcback);
 
-        Debug.Log(knobcback);
+        rb.AddForce(knobcback, ForceMode2D.Impulse);
+
+        // Debug.Log("AddForce");
     }
 
     public void OnDestroySelf()
