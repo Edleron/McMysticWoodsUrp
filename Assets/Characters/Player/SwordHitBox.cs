@@ -7,20 +7,20 @@ using UnityEngine;
 
 public class SwordHitBox : MonoBehaviour
 {
-    public float swordDamage = 1.0f;
-    public float knockbackForce = 10f;
-    public Collider2D swordCollider;    
-    public Vector3 faceRight = new Vector3(1, 0.25f, 0);
-    public Vector3 faceLeft  = new Vector3(-1, 0.25f, 0);
+    private float swordDamage = 1.0f;
+    private float knockbackForce = 15f;
+    private Collider2D swordCollider;    
+    private Vector3 faceRight = new Vector3(1, 0.25f, 0);
+    private Vector3 faceLeft  = new Vector3(-1, 0.25f, 0);
 
     private void Start ()
     {
+        swordCollider = GetComponent<Collider2D>();
+        
         if (swordCollider == null)
         {
             Debug.LogWarning("Sword Collider Not Set");
         }
-
-        // swordCollider = GetComponent<Collider2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -35,6 +35,8 @@ public class SwordHitBox : MonoBehaviour
 
             // other.SendMessage("OnHit", swordDamage, knocback);   
             damagableObject.OnHit(swordDamage, knokcback);
+
+            Debug.Log("Player Damagable");
         } 
         else 
         {
