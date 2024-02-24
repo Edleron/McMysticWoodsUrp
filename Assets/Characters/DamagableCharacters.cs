@@ -6,62 +6,111 @@ using Unity.VisualScripting;
 
 public class DamagableCharacters : MonoBehaviour, IDamagable
 {
-    private Animator animator;
-    private Collider2D col;
-    private Rigidbody2D rb;
+    public GameObject healtText;
+    public bool disableSimulation           = false;
+    public bool canTurnInvicible            = false;
+    public float health                     = 3; 
+    public bool  targetable                 = true;
 
-    public float _health            = 3; 
-    private bool isAlive            = true;
-    public bool  _targetable        = true;
-    public bool disableSimulation   = false;
+    private bool _isAlive                    = true;  
+    private bool _invincible                 = false;
+    private float _invincibilityTime         = 5.0f;
+    private float _invincibilityTimeElapsed  = 0.25f;
 
-    public float Healt {
-        get {
-            return _health;
-        }
-        set {
-            if (value < _health) animator.SetTrigger("hit");
+    private Animator _animator;
+    private Collider2D _col;
+    private Rigidbody2D _rb;
 
-            _health = value;            
+    public float Healt { get { return health; } set {
+            if (value < health) 
+            {
+                _animator.SetTrigger("hit");
+                RectTransform textTranform = Instantiate(healtText).GetComponent<RectTransform>();
+                textTranform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+                Canvas canvas = GameObject.FindObjectOfType<Canvas>();
+                textTranform.SetParent(canvas.transform);
+            }
+           
+            health = value;            
 
-            if (_health <= 0)
+            if (health <= 0)
             {
                 // Destroy(gameObject);
-                isAlive = false;
+                _isAlive = false;
                 Targetable = false;
-                animator.SetBool("isAlive", isAlive);
+                _animator.SetBool("isAlive", _isAlive);
             }
         }
     }
 
-    public bool Targetable { get { return _targetable;} set { 
-        _targetable = value; 
-        if (disableSimulation) rb.simulated = false; 
-        col.enabled = false; 
+    public bool Targetable { get { return targetable;} set { 
+        targetable = value; 
+        if (disableSimulation) _rb.simulated = false; 
+        _col.enabled = false; 
         } 
+    }
+
+    // BELİRLİ BİR SURE ZARAR GÖRMEME FEATURE !
+    public bool Invincible { get { return _invincible; } set {
+            _invincible = value;
+
+            if (_invincible)
+            {
+                _invincibilityTimeElapsed = 0;
+            }
+        }
     }
 
     private void Start()
     {
-        rb       = GetComponent<Rigidbody2D>();
-        col      = GetComponent<Collider2D>();
-        animator = GetComponent<Animator>();
-        animator.SetBool("isAlive", isAlive);
+        _rb       = GetComponent<Rigidbody2D>();
+        _col      = GetComponent<Collider2D>();
+        _animator = GetComponent<Animator>();
+        _animator.SetBool("isAlive", _isAlive);
     }
+
+    private void FixedUpdate() 
+    {
+        if (Invincible)
+        {
+            _invincibilityTimeElapsed += Time.deltaTime;
+
+            if (_invincibilityTimeElapsed > _invincibilityTime)
+            {
+                Invincible = false;
+            }
+        }
+    }
+
 
     public void OnHit(float damage)
     {
-        Debug.Log("Silme Hit For ! " + damage);
-        Healt -= damage;
+        if (!Invincible)
+        {
+            Healt -= damage;
+             // Debug.Log("Silme Hit For ! " + damage);
+
+            if (canTurnInvicible)
+            {
+                Invincible = true;
+            }
+        }
+       
     }
 
     public void OnHit(float damage, Vector2 knobcback)
     {
-        Healt -= damage;
+        if (!Invincible)
+        {
+            Healt -= damage;
+            _rb.AddForce(knobcback, ForceMode2D.Impulse);
+            // Debug.Log("AddForce");
 
-        rb.AddForce(knobcback, ForceMode2D.Impulse);
-
-        // Debug.Log("AddForce");
+            if (canTurnInvicible)
+            {
+                Invincible = true;
+            }
+        }
     }
 
     public void OnDestroySelf()
